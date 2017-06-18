@@ -5,6 +5,10 @@ import time
 from directkeys import ReleaseKey, PressKey, W, A, S, D
 
 def process_img(original_image):
+	"""Converts image to gray colors, finds edges and detect circles (bullets)
+	returns converted image
+	"""
+	
 	processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
 	processed_img = cv2.Canny(processed_img, threshold1=100, threshold2=200)
 	
@@ -17,13 +21,17 @@ def process_img(original_image):
 		param2=16,
 		minRadius=6,
 		maxRadius=18)
+	print(circles)
 	
 	draw_circles(processed_img, circles)
 	
 	return processed_img
 	
-#circles from HoughCircles
 def draw_circles(img, circles):
+	"""Drows circles to image
+	param circles is [[[x, y, radius] ....]] (from cv2.HoughCircles())
+	"""
+	
 	if circles is not None:
 		circles = np.round(circles[0, :]).astype("int")
 	 
