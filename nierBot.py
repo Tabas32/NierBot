@@ -3,6 +3,7 @@ from PIL import ImageGrab
 import cv2
 import time
 from directkeys import ReleaseKey, PressKey, W, A, S, D
+from grabScreen import grab_screen
 
 def process_img(original_image):
 	"""Converts image to gray colors, finds edges and detect circles (bullets)
@@ -67,15 +68,16 @@ def mark_player(scene):
 	
 	
 while(True):
-	screen = np.array(ImageGrab.grab(bbox=(0, 25, 640, 420)))
+	#screen = np.array(ImageGrab.grab(bbox=(0, 25, 640, 420)))
+	screen = grab_screen((0, 25, 640, 420))
 	new_screen = process_img(screen)
 	cnt = mark_player(screen)
 	if cnt is not None:
 		x,y,w,h = cv2.boundingRect(cnt)
 		cv2.rectangle(screen,(x,y),(x+w,y+h),(255,0,0),3)
 	
-	
-	#cv2.imshow('window2', new_screen)
+	# new_screen = grab_screen((0, 25, 640, 420))
+	# cv2.imshow('window2', new_screen)
 	cv2.imshow('window1', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
 	if cv2.waitKey(25) & 0xFF == ord('q'):
 		cv2.destroyAllWindows()
